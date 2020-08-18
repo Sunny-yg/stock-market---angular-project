@@ -1,0 +1,92 @@
+<form #myForm="ngForm" (ngSubmit)="onSignUp(myForm.value, myForm.form.valid)" novalidate>
+    <label>create your account</label>
+
+    <div class="form-group col-md-4">
+        <label for="inputUsername">User name</label>
+        <input type="text" ngModel name="username" #username="ngModel" required class="form-control" id="inputUsername">
+    </div>
+    <!-- Username提示信息 -->
+    <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger col-md-4">
+        <div *ngIf="username.errors.required">
+            Name is required.
+        </div>
+    </div>
+
+    <div class="form-group col-md-4">
+        <label for="uType">User Type</label>
+        <select id="uType" class="form-control" ngModel name="usertype" #usertype="ngModel" required>
+            <option selected>user</option>
+            <option>admin</option>
+        </select>
+    </div>
+    <!-- User Type提示信息 -->
+    <div *ngIf="usertype.invalid && (usertype.dirty || usertype.touched)" class="alert alert-danger col-md-4">
+        <div *ngIf="usertype.errors.required">
+            User type is required.
+        </div>
+    </div>
+    <div class="form-group col-md-4">
+        <label for="inputEmail">Email:</label>
+        <input type="email" ngModel name="email" #email="ngModel" required email class="form-control" id="inputEmail">
+    </div>
+    <!-- Email提示信息 -->
+    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger col-md-4">
+        <div *ngIf="email.errors.required">
+            Email is required.
+        </div>
+        <div *ngIf="email.errors.email">
+            Email is invalid.
+        </div>
+    </div>
+    <div class="form-group col-md-4">
+        <label for="inputMobile">Mobile</label>
+        <input type="text" ngModel name="mobile" #mobile="ngModel" mobile required minlength="11" maxlength="11"
+            class="form-control" id="inputMobile">
+    </div>
+    <!-- Mobile提示信息 -->
+    <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="alert alert-danger col-md-4">
+        <div *ngIf="mobile.errors.required">
+            Mobile is required.
+        </div>
+        <div *ngIf="mobile.errors.minlength">
+            Mobile must be 11 digits.
+        </div>
+        <!-- 指令校验提示信息 -->
+        <div *ngIf="mobile.errors.mobile">
+            The number must begin with 13 ,15, 17, 18.
+        </div>
+    </div>
+    <div class="form-group col-md-4" ngModelGroup="passwordsGroup" #passwordsGroup="ngModelGroup" equal>
+        <label for="inputPassword">Password</label>
+        <input type="password" ngModel name="password" #password="ngModel" required minlength="6" class="form-control"
+            id="inputPassword">
+        <label for="confirmPassword">Comfirm password</label>
+        <input type="password" ngModel name="pwconfirm" #pwconfirm="ngModel" required minlength="6" class="form-control"
+            id="confirmPassword">
+    </div>
+    <!-- Password提示信息 -->
+    <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger col-md-4">
+        <div *ngIf="password.errors.required">
+            Password is required.
+        </div>
+        <div *ngIf="password.errors.minlength">
+            Password must be at least 6 characters long.
+        </div>
+    </div>
+    <!-- 指令验证 password and pwconfirm -->
+    <!-- TODO:解决在输入完conform password后 才会触发这个error message -->
+    <div *ngIf="passwordsGroup.invalid && (passwordsGroup.dirty || passwordsGroup.touched)"
+        class="alert alert-danger col-md-4">
+        <div *ngIf="passwordsGroup.errors.equal">
+            Passwords are inconsistent.
+        </div>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="remeberme">
+        <label class="form-check-label" for="remeberme">Remeber me</label>
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!myForm.form.valid">Submit</button>
+</form>
+
+{{ myForm.value | json }}
+{{ myForm.valid}}

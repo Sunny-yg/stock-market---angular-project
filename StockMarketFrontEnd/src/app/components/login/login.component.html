@@ -1,0 +1,50 @@
+<!-- 模板变量表单 -->
+
+<form #myForm="ngForm" (ngSubmit)="onLogin(myForm.value, myForm.form.valid)" novalidate>
+    <!-- 后台校验登录 -->
+    <p *ngFor="let alert of alerts" class="col-md-4">
+        <ngb-alert [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
+    </p>
+
+    <div class="form-group col-md-4">
+        <label for="inputUsername">User name</label>
+        <input type="text" ngModel name="userName" #username="ngModel" required class="form-control" id="inputUsername">
+    </div>
+    <!-- 提示信息 -->
+    <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger col-md-4">
+        <div *ngIf="username.errors.required">
+            Name is required.
+        </div>
+    </div>
+
+    <div class="form-group col-md-4">
+        <label for="inputPassword">Password</label>
+        <input type="password" ngModel name="passWord" #password="ngModel" required minlength="6" class="form-control"
+            id="inputPassword">
+    </div>
+    <!-- 提示信息 -->
+    <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger col-md-4">
+        <div *ngIf="password.errors.required">
+            Password is required.
+        </div>
+        <div *ngIf="password.errors.minlength">
+            Password must be at least 6 characters long.
+        </div>
+    </div>
+
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="remeberme">
+        <label class="form-check-label" for="remeberme">Remeber me</label>
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!myForm.form.valid">Sign in</button>
+
+    <!-- <button type="submit" class="btn btn-success" [routerLink]="[ '/userhome' ]">Sign in</button> -->
+    <!-- <button type="submit" class="btn btn-success" [routerLink]="[ '/adminhome' ]">Sign in</button> -->
+
+    <br>
+    <label for="signup">New to Stock Market?
+        <a [routerLink]="[ '/signup' ]">Create an accout</a>
+    </label>
+</form>
+{{ myForm.value | json }}
+{{ myForm.valid}}
